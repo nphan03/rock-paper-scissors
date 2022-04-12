@@ -1,3 +1,13 @@
+const rock = document.querySelector('#rock');
+const paper = document.querySelector('#paper');
+const scissors = document.querySelector('#scissors');
+const result = document.querySelector('.result');
+
+let recordWin=0,round=0,outcome = "";
+rock.onclick = () => startPlay("rock");
+paper.onclick = () => startPlay("paper");
+scissors.onclick = () => startPlay("scissors");
+
 function computePlay (){
     let randomNumber = Math.floor(Math.random()*3)+1;
     if (randomNumber == 1){
@@ -9,30 +19,27 @@ function computePlay (){
     }
 }
 
-function startPlay (userShape, computeShape){
-    if(userShape == computePlay){
-        return "draw";
+function startPlay (userShape){
+    round++;
+    let computeShape = computePlay();
+    if(userShape == computeShape){
+        outcome="draw";
     }else{
         if (userShape == "rock"){
-            return (computeShape == "paper") ? "Beated by paper" : "win"; 
+            (computeShape == "paper") ? outcome="Beated by paper" : outcome="Beats"; 
         }else if (userShape == "paper"){
-            return (computeShape == "scissors") ? "Beated by scissors" : "win";
+            (computeShape == "scissors") ? outcome="Beated by scissors" : outcome="Beats";
         }else{
-            return (computeShape == "rock") ? "Beated by rock" : "win";
+            (computeShape == "rock") ? outcome="Beated by rock" : outcome="Beats";
         }
     }
-}
-
-function game (){
-    let recordWin=0;
-    for (let i = 0; i<5; i++){
-        let userShape = prompt("Choose rock, paper or scissors", "");
-        let computeShape = computePlay();
-        let outcome = startPlay(userShape.toLowerCase(), computeShape);
-        if( outcome == "win"){
-            recordWin++;
-        };
-        console.log(outcome);
+    result.textContent = outcome;
+    if( outcome == "Beats"){
+        recordWin++;
+    };
+    if (round > 5){
+        (recordWin >= 3) ? result.textContent = "YOU WIN" : result.textContent = "YOU LOSE";
+        recordWin=0;
+        round=0;
     }
-    (recordWin >= 3) ? console.log("YOU WIN") : console.log("YOU LOSE");
 }
